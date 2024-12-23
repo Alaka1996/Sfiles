@@ -17,24 +17,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up GCC (if necessary)
-      - name: Set up GCC
-        uses: actions/setup-cpp@v2
-        with:
-          compiler: gcc
+      # Step 2: Install GCC and Make
+      - name: Install GCC and Make
+        run: |
+          sudo apt update
+          sudo apt install -y gcc make
 
-      # Step 3: Install make (if not pre-installed)
-      - name: Install make
-        run: sudo apt-get install make
-
-      # Step 4: Build the project
+      # Step 3: Build the project with verbose output
       - name: Build the project
-        run: make
+        run: |
+          make VERBOSE=1
 
-      # Step 5: Run tests (if applicable, for now it's just a simple build)
+      # Step 4: Run the program
       - name: Run the program
         run: ./bin/sensor_program
 
-      # Step 6: Clean up (optional, can be skipped)
+      # Step 5: Clean up (optional, can be skipped)
       - name: Clean up
         run: make clean
