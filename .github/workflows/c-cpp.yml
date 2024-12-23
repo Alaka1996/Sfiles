@@ -13,25 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Install GCC and Make
       - name: Install GCC and Make
         run: |
           sudo apt update
           sudo apt install -y gcc make
 
-      # Step 3: Build the project with verbose output
       - name: Build the project
-        run: |
-          make VERBOSE=1
+        run: make VERBOSE=1
 
-      # Step 4: Run the program
       - name: Run the program
         run: ./bin/sensor_program
 
-      # Step 5: Clean up (optional, can be skipped)
       - name: Clean up
         run: make clean
