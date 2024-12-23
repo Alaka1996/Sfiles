@@ -1,34 +1,37 @@
-# Makefile
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Iinclude
 
-CC = gcc                   # Compiler to use
-CFLAGS = -Wall -Iinclude    # Compiler flags
-SRC_DIR = src               # Directory for source files
-OBJ_DIR = obj               # Directory for object files
-BIN_DIR = bin               # Directory for the final binary
-TARGET = $(BIN_DIR)/sensor_program  # Final binary name
+# Directories
+SRC_DIR = src
+OBJ_DIR = obj
+BIN_DIR = bin
 
-# List of source files with full paths
-SRC = $(SRC_DIR)/sensor.c $(SRC_DIR)/utils.c main.c
+# Target program
+TARGET = $(BIN_DIR)/sensor_program
 
-# Object files are the corresponding .o files of the .c files
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+# Source files
+SRC = $(wildcard $(SRC_DIR)/*.c) main.c
 
-# Default target: build the program
+# Object files
+OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
+
+# Default rule: build the program
 all: $(TARGET)
 
-# Rule to link object files into the final executable
+# Linking rule
 $(TARGET): $(OBJ)
-	@mkdir -p $(BIN_DIR)           # Create bin directory if it doesn't exist
-	$(CC) $(OBJ) -o $(TARGET)
+	@mkdir -p $(BIN_DIR)
+	$(CC) $(OBJ) -o $@
 	@echo "Build complete."
 
-# Rule to compile source files into object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)           # Create object directory if it doesn't exist
+# Compilation rule
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled: $<"
 
-# Clean the project: remove object files and the executable
+# Clean rule
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 	@echo "Cleaned up."
