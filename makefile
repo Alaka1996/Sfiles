@@ -13,7 +13,7 @@ TARGET = $(BIN_DIR)/sensor_program
 # Source files
 SRC = $(wildcard $(SRC_DIR)/*.c) main.c
 
-# Object files
+# Object files with directory mapping
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 # Default rule: build the program
@@ -27,7 +27,7 @@ $(TARGET): $(OBJ)
 
 # Compilation rule
 $(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)  # Dynamically create obj/ and any subdirectories like obj/src/
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled: $<"
 
