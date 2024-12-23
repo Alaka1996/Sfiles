@@ -7,33 +7,30 @@ SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
 
-# Target program
+# Files
+SRC = $(wildcard $(SRC_DIR)/*.c) main.c
+OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 TARGET = $(BIN_DIR)/sensor_program
 
-# Source files
-SRC = $(wildcard $(SRC_DIR)/*.c) main.c
-
-# Object files with directory mapping
-OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
-
-# Default rule: build the program
+# Default rule
 all: $(TARGET)
 
-# Linking rule
+# Link object files to create the executable
 $(TARGET): $(OBJ)
 	@mkdir -p $(BIN_DIR)
 	$(CC) $(OBJ) -o $@
 	@echo "Build complete."
 
-# Compilation rule
+# Compile source files to object files
 $(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(dir $@)  # Dynamically create obj/ and any subdirectories like obj/src/
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled: $<"
 
-# Clean rule
+# Clean up build artifacts
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 	@echo "Cleaned up."
 
+# Declare phony targets
 .PHONY: all clean
