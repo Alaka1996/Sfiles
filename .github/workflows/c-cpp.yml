@@ -1,0 +1,40 @@
+name: C Project CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up GCC (if necessary)
+      - name: Set up GCC
+        uses: actions/setup-cpp@v2
+        with:
+          compiler: gcc
+
+      # Step 3: Install make (if not pre-installed)
+      - name: Install make
+        run: sudo apt-get install make
+
+      # Step 4: Build the project
+      - name: Build the project
+        run: make
+
+      # Step 5: Run tests (if applicable, for now it's just a simple build)
+      - name: Run the program
+        run: ./bin/sensor_program
+
+      # Step 6: Clean up (optional, can be skipped)
+      - name: Clean up
+        run: make clean
